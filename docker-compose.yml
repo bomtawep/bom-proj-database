@@ -7,7 +7,7 @@ services:
     container_name: 'bom-mongo-db'
     image: 'mongo:latest'
     volumes:
-      - ./data/dev/mongo:/data/db
+      - ./mongo-db/dev/mongo:/data/db
     ports:
       - '27100:27017'
     environment:
@@ -20,7 +20,7 @@ services:
       - ingress
   postgres-db:
     image: postgres:15.2-alpine
-    container_name: pg_container
+    container_name: bom-postgres-db
     # restart: always
     environment:
       POSTGRES_USER: ${DATABASE_USERNAME}
@@ -29,19 +29,4 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./db:/var/lib/postgresql/data
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin4_container
-    # restart: always
-    ports:
-      - "5050:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-    volumes:
-      - ./pgadmin-data:/var/lib/pgadmin
-    networks:
-      - ingress
-    depends_on:
-      - postgres-db
+      - ./postgres-db:/var/lib/postgresql/data
